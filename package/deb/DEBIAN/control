@@ -1,0 +1,11 @@
+Package:        backlight-tracer
+Version:        MAJOR.MINOR.PATCH
+Architecture:   ARCHITECTURE
+Maintainer:     Josip Medved <jmedved@jmedved.com>
+Homepage:       https://www.medo64.com/backlight-tracer/
+Description:    Tracking backlight brightness over power changes
+ It remembers backlight brightness an restores it upon power state change.
+Section:        utils
+Priority:       optional
+Depends:        gnupg2
+Build-Depends:  bash-5.0.0
