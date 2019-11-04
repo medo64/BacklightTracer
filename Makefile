@@ -54,14 +54,13 @@ dist: release
 
 
 release: src/backlight-tracer.sh
-	$(if $(findstring 0,$(HAS_UNCOMMITTED)),,$(warning Uncommitted changes present))
 	@mkdir -p bin/
 	@cp src/backlight-tracer.sh bin/backlight-tracer
 	@chmod +x bin/backlight-tracer
+	$(if $(findstring 0,$(HAS_UNCOMMITTED)),,$(warning Uncommitted changes present))
 
 
 package: dist
-	$(if $(findstring 0,$(HAS_UNCOMMITTED)),,$(warning Uncommitted changes present))
 	$(if $(findstring 0,$(HAS_LINTIAN)),,$(warning No 'lintian' in path, consider installing 'lintian' package))
 	@command -v dpkg-deb >/dev/null 2>&1 || { echo >&2 "Package 'dpkg-deb' not installed!"; exit 1; }
 	@$(eval PACKAGE_NAME = $(DIST_NAME)_$(DIST_VERSION)_$(DIST_ARCHITECTURE))
@@ -96,3 +95,4 @@ package: dist
 	@$(RM) -r $(PACKAGE_DIR)/
 	@lintian --suppress-tags dir-or-file-in-opt dist/$(PACKAGE_NAME).deb
 	@echo Output at dist/$(PACKAGE_NAME).deb
+	$(if $(findstring 0,$(HAS_UNCOMMITTED)),,$(warning Uncommitted changes present))
