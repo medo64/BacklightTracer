@@ -1,0 +1,13 @@
+[Unit]
+Description=Backlight Tracer service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/opt/backlight-tracer/backlight-tracer
+Restart=always
+RestartSec=1
+
+[Install]
+Alias=backlight-tracer.service
+WantedBy=multi-user.target

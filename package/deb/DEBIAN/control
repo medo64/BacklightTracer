@@ -8,4 +8,4 @@ Description:    Tracking backlight brightness over power changes
 Section:        utils
 Priority:       optional
 Depends:        gnupg2
-Build-Depends:  bash-5.0.0
+Build-Depends:  dh-systemd (>= 1.5)

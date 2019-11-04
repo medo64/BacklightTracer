@@ -90,6 +90,8 @@ package: dist
 	@chmod 755 $(PACKAGE_DIR)/DEBIAN/p*inst $(PACKAGE_DIR)/DEBIAN/p*rm
 	@install -d $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install bin/backlight-tracer $(PACKAGE_DIR)/opt/backlight-tracer/
+	@install -d $(PACKAGE_DIR)/lib/systemd/system/
+	@sudo install -m 644 src/backlight-tracer.service $(PACKAGE_DIR)/lib/systemd/system/
 	@fakeroot dpkg-deb --build $(PACKAGE_DIR)/ > /dev/null
 	@cp /tmp/$(PACKAGE_NAME).deb dist/
 	@$(RM) -r $(PACKAGE_DIR)/

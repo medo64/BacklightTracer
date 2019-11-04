@@ -24,4 +24,7 @@ pXF542bTCX+bXOfPWbdl/mnIBRKdsNGNu/FbXTQ4gEmXQwmki5YL8kRwbBloxuH2
 =gY4j
 -----END PGP PUBLIC KEY BLOCK-----" | apt-key add -
 
+deb-systemd-helper enable backlight-tracer || true
+deb-systemd-invoke start backlight-tracer || systemctl start backlight-tracer
+
 exit 0

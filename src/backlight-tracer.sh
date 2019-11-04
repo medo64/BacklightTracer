@@ -19,8 +19,7 @@ if [ -n "$PID_LAST" ]; then
     fi
 fi
 echo $$ > $PID_FILE
-trap "echo -ne '${ESCAPE_RESET}' ; rm $PID_FILE 2> /dev/null" EXIT SIGHUP SIGINT SIGTERM
-trap "exit 1" INT
+trap "echo -ne '${ESCAPE_RESET}' ; rm $PID_FILE 2> /dev/null; exit 0" EXIT INT KILL SIGHUP SIGINT SIGKILL SIGTERM
 
 
 FILE_AC="/var/cache/.backlight-tracer.ac"

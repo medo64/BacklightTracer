@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+deb-systemd-invoke stop backlight-tracer || systemctl stop backlight-tracer
+deb-systemd-helper disable backlight-tracer
+
+exit 0
