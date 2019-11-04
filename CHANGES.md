@@ -1,5 +1,5 @@
 ## Release Notes ##
 
-### 0.0.0 [2019-11-03] ###
+### 0.1.0 [2019-11-04] ###
 
-* Not released yet
+* Initial release
