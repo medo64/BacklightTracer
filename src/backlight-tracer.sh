@@ -46,39 +46,39 @@ else
 fi
 
 
-STORED_ADAPTER=`cat $FILE_DATA_ADAPTER 2>/dev/null`
-STORED_BATTERY=`cat $FILE_DATA_BATTERY 2>/dev/null`
+STORED_DATA_ADAPTER=`cat $FILE_DATA_ADAPTER 2>/dev/null`
+STORED_DATA_BATTERY=`cat $FILE_DATA_BATTERY 2>/dev/null`
 
-if [[ "$STORED_ADAPTER" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored adapter backlight is $STORED_ADAPTER${ESCAPE_RESET}"; fi
-if [[ "$STORED_BATTERY" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored battery backlight is $STORED_BATTERY${ESCAPE_RESET}"; fi
+if [[ "$STORED_DATA_ADAPTER" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored adapter backlight is $STORED_DATA_ADAPTER${ESCAPE_RESET}"; fi
+if [[ "$STORED_DATA_BATTERY" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored battery backlight is $STORED_DATA_BATTERY${ESCAPE_RESET}"; fi
 
 while(true); do
     BRIGHTNESS=`cat $FILE_DEVICE_BACKLIGHT_BRIGHTNESS`
     CURR_ADAPTER=`cat $FILE_DEVICE_POWER_ONLINE`
     if [[ "$CURR_ADAPTER" != "$LAST_ADAPTER" ]]; then
         if [[ "$CURR_ADAPTER" != "0" ]]; then
-            if [[ "$STORED_ADAPTER" != "" ]] && [[ "$STORED_ADAPTER" != "$BRIGHTNESS" ]]; then
-                echo -e "${ESCAPE_RESTORE}Restoring AC backlight to $STORED_ADAPTER${ESCAPE_RESET}"
-                echo $STORED_ADAPTER > $FILE_DEVICE_BACKLIGHT_BRIGHTNESS
+            if [[ "$STORED_DATA_ADAPTER" != "" ]] && [[ "$STORED_DATA_ADAPTER" != "$BRIGHTNESS" ]]; then
+                echo -e "${ESCAPE_RESTORE}Restoring AC backlight to $STORED_DATA_ADAPTER${ESCAPE_RESET}"
+                echo $STORED_DATA_ADAPTER > $FILE_DEVICE_BACKLIGHT_BRIGHTNESS
             fi
         else
-            if [[ "$STORED_BATTERY" != "" ]] && [[ "$STORED_BATTERY" != "$BRIGHTNESS" ]]; then
-                echo -e "${ESCAPE_RESTORE}Restoring battery backlight to $STORED_BATTERY${ESCAPE_RESET}"
-                echo $STORED_BATTERY > $FILE_DEVICE_BACKLIGHT_BRIGHTNESS
+            if [[ "$STORED_DATA_BATTERY" != "" ]] && [[ "$STORED_DATA_BATTERY" != "$BRIGHTNESS" ]]; then
+                echo -e "${ESCAPE_RESTORE}Restoring battery backlight to $STORED_DATA_BATTERY${ESCAPE_RESET}"
+                echo $STORED_DATA_BATTERY > $FILE_DEVICE_BACKLIGHT_BRIGHTNESS
             fi
         fi
         LAST_ADAPTER=$CURR_ADAPTER
     else
         if [[ "$CURR_ADAPTER" != "0" ]]; then
-           if [[ "$STORED_ADAPTER" != "$BRIGHTNESS" ]]; then
+           if [[ "$STORED_DATA_ADAPTER" != "$BRIGHTNESS" ]]; then
                echo $BRIGHTNESS > $FILE_DATA_ADAPTER
-               STORED_ADAPTER=$BRIGHTNESS
+               STORED_DATA_ADAPTER=$BRIGHTNESS
                echo -e "${ESCAPE_CHANGE}Updated AC backlight to $BRIGHTNESS${ESCAPE_RESET}"
            fi
         else
-           if [[ "$STORED_BATTERY" != "$BRIGHTNESS" ]]; then
+           if [[ "$STORED_DATA_BATTERY" != "$BRIGHTNESS" ]]; then
                echo $BRIGHTNESS > $FILE_DATA_BATTERY
-               STORED_BATTERY=$BRIGHTNESS
+               STORED_DATA_BATTERY=$BRIGHTNESS
                echo -e "${ESCAPE_CHANGE}Updated battery backlight to $BRIGHTNESS${ESCAPE_RESET}"
            fi
         fi
