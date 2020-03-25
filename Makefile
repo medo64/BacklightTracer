@@ -31,16 +31,28 @@ distclean: clean
 install: bin/backlight-tracer
 	@sudo install -d $(DESTDIR)/$(PREFIX)/bin/
 	@sudo install bin/backlight-tracer $(DESTDIR)/$(PREFIX)/bin/
+	@sudo install bin/backlight-decrease $(DESTDIR)/$(PREFIX)/bin/
+	@sudo install bin/backlight-increase $(DESTDIR)/$(PREFIX)/bin/
 	@mkdir -p build/man/
 	@sed 's/MAJOR.MINOR.PATCH/$(DIST_VERSION)/g' docs/man/backlight-tracer.1 > build/man/backlight-tracer.1
+	@sed 's/MAJOR.MINOR.PATCH/$(DIST_VERSION)/g' docs/man/backlight-decrease.1 > build/man/backlight-decrease.1
+	@sed 's/MAJOR.MINOR.PATCH/$(DIST_VERSION)/g' docs/man/backlight-increase.1 > build/man/backlight-increase.1
 	@gzip -cn --best build/man/backlight-tracer.1 > build/man/backlight-tracer.1.gz
+	@gzip -cn --best build/man/backlight-decrease.1 > build/man/backlight-decrease.1.gz
+	@gzip -cn --best build/man/backlight-increase.1 > build/man/backlight-increase.1.gz
 	@sudo install -m 644 build/man/backlight-tracer.1.gz /usr/share/man/man1/
+	@sudo install -m 644 build/man/backlight-decrease.1.gz /usr/share/man/man1/
+	@sudo install -m 644 build/man/backlight-increase.1.gz /usr/share/man/man1/
 	@sudo mandb -q
 	@echo Installed at $(DESTDIR)/$(PREFIX)/bin/ | sed 's^//^/^g'
 
 uninstall: $(DESTDIR)/$(PREFIX)/bin/backlight-tracer
 	@sudo $(RM) $(DESTDIR)/$(PREFIX)/bin/backlight-tracer
+	@sudo $(RM) $(DESTDIR)/$(PREFIX)/bin/backlight-decrease
+	@sudo $(RM) $(DESTDIR)/$(PREFIX)/bin/backlight-increase
 	@sudo $(RM) /usr/share/man/man1/backlight-tracer.1.gz
+	@sudo $(RM) /usr/share/man/man1/backlight-decrease.1.gz
+	@sudo $(RM) /usr/share/man/man1/backlight-increase.1.gz
 	@sudo mandb -q
 
 dist: release
@@ -56,6 +68,8 @@ dist: release
 release: src/backlight-tracer.sh
 	@mkdir -p bin/
 	@cp src/backlight-tracer.sh bin/backlight-tracer
+	@cp src/backlight-decrease.sh bin/backlight-decrease
+	@cp src/backlight-increase.sh bin/backlight-increase
 	@chmod +x bin/backlight-tracer
 	$(if $(findstring 0,$(HAS_UNCOMMITTED)),,$(warning Uncommitted changes present))
 
@@ -83,13 +97,19 @@ package: dist
 	@gzip -cn --best build/changelog > $(PACKAGE_DIR)/usr/share/doc/backlight-tracer/changelog.gz
 	@mkdir -p build/man/
 	@sed 's/MAJOR.MINOR//g' docs/man/backlight-tracer.1 > build/man/backlight-tracer.1
+	@sed 's/MAJOR.MINOR//g' docs/man/backlight-decrease.1 > build/man/backlight-decrease.1
+	@sed 's/MAJOR.MINOR//g' docs/man/backlight-increase.1 > build/man/backlight-increase.1
 	@mkdir -p $(PACKAGE_DIR)/usr/share/man/man1/
 	@gzip -cn --best build/man/backlight-tracer.1 > $(PACKAGE_DIR)/usr/share/man/man1/backlight-tracer.1.gz
+	@gzip -cn --best build/man/backlight-decrease.1 > $(PACKAGE_DIR)/usr/share/man/man1/backlight-decrease.1.gz
+	@gzip -cn --best build/man/backlight-increase.1 > $(PACKAGE_DIR)/usr/share/man/man1/backlight-increase.1.gz
 	@find $(PACKAGE_DIR)/ -type d -exec chmod 755 {} +
 	@find $(PACKAGE_DIR)/ -type f -exec chmod 644 {} +
 	@chmod 755 $(PACKAGE_DIR)/DEBIAN/p*inst $(PACKAGE_DIR)/DEBIAN/p*rm
 	@install -d $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install bin/backlight-tracer $(PACKAGE_DIR)/opt/backlight-tracer/
+	@install bin/backlight-decrease $(PACKAGE_DIR)/opt/backlight-tracer/
+	@install bin/backlight-increase $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install -d $(PACKAGE_DIR)/lib/systemd/system/
 	@sudo install -m 644 src/backlight-tracer.service $(PACKAGE_DIR)/lib/systemd/system/
 	@fakeroot dpkg-deb --build $(PACKAGE_DIR)/ > /dev/null

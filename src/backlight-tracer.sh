@@ -13,7 +13,7 @@ SCRIPT_NAME=`basename $0`
 PID_FILE="/run/$SCRIPT_NAME.pid"
 PID_LAST=`cat $PID_FILE 2>/dev/null`
 if [ -n "$PID_LAST" ]; then
-    PID_ACTIVE=`ps -ax $PID_LAST | grep "^$PID_LAST" | grep "$SCRIPT_NAME"`
+    PID_ACTIVE=`ps -ax $PID_LAST | grep "^ *$PID_LAST" | grep "$SCRIPT_NAME"`
     if [ -n "$PID_ACTIVE" ]; then
         echo -e "${ESCAPE_ERROR}$SCRIPT_NAME: script is already running!${ESCAPE_RESET}" >&2
         exit 255
@@ -26,8 +26,8 @@ trap "echo -ne '${ESCAPE_RESET}' ; rm $PID_FILE 2> /dev/null; exit 0" EXIT INT K
 FILE_DATA_ADAPTER="/var/cache/.backlight-tracer.adapter.dat"
 FILE_DATA_BATTERY="/var/cache/.backlight-tracer.battery.dat"
 
-FILE_INPUT_INCREASE="/run/.backlight-tracer.inc.signal"
-FILE_INPUT_DECREASE="/run/.backlight-tracer.dec.signal"
+FILE_INPUT_INCREASE="/tmp/.backlight-tracer.inc.signal"
+FILE_INPUT_DECREASE="/tmp/.backlight-tracer.dec.signal"
 
 if [ "$EUID" -ne 0 ]; then
     echo -e "${ESCAPE_ERROR}$SCRIPT_NAME: must run as root (try sudo)!${ESCAPE_RESET}" >&2
