@@ -61,6 +61,8 @@ else
 fi
 
 
+SLEEP_INTERVAL=0.5
+
 STORED_DATA_ADAPTER=`cat $FILE_DATA_ADAPTER 2>/dev/null`
 STORED_DATA_BATTERY=`cat $FILE_DATA_BATTERY 2>/dev/null`
 
@@ -99,7 +101,7 @@ while(true); do
         fi
     fi
 
-    sleep 0.5
+    sleep $SLEEP_INTERVAL
 
     if [[ "$STEP_BRIGHTNESS" -gt 0 ]]; then
         if [[ -e "$FILE_INPUT_DECREASE" ]]; then
@@ -109,6 +111,7 @@ while(true); do
             if [[ "$NEW_BRIGHTNESS" -ne "$CURR_BRIGHTNESS" ]]; then
                 echo "$NEW_BRIGHTNESS" > "$FILE_DEVICE_BACKLIGHT_BRIGHTNESS"
             fi
+            SLEEP_INTERVAL=0.1
         elif [[ -e "$FILE_INPUT_INCREASE" ]]; then
             rm "$FILE_INPUT_INCREASE"
             if [[ "$CURR_BRIGHTNESS" -lt "$STEP_BRIGHTNESS" ]]; then
@@ -120,7 +123,9 @@ while(true); do
             if [[ "$NEW_BRIGHTNESS" -ne "$CURR_BRIGHTNESS" ]]; then
                 echo "$NEW_BRIGHTNESS" > "$FILE_DEVICE_BACKLIGHT_BRIGHTNESS"
             fi
+            SLEEP_INTERVAL=0.1
+        else
+            SLEEP_INTERVAL=0.5
         fi
     fi
 done
-
