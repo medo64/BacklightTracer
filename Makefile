@@ -6,7 +6,7 @@ endif
 
 
 DIST_NAME := backlight-tracer
-DIST_VERSION := 0.1.0
+DIST_VERSION := 0.1.1
 DIST_ARCHITECTURE := all
 
 SOURCE_LIST := Makefile CONTRIBUTING.md LICENSE.md README.md src/ docs/
