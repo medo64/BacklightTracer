@@ -22,8 +22,8 @@ echo $$ > $PID_FILE
 trap "echo -ne '${ESCAPE_RESET}' ; rm $PID_FILE 2> /dev/null; exit 0" EXIT INT KILL SIGHUP SIGINT SIGKILL SIGTERM
 
 
-FILE_AC="/var/cache/.backlight-tracer.ac"
-FILE_BAT="/var/cache/.backlight-tracer.bat"
+FILE_DATA_ADAPTER="/var/cache/.backlight-tracer.adapter.dat"
+FILE_DATA_BATTERY="/var/cache/.backlight-tracer.battery.dat"
 
 if [ "$EUID" -ne 0 ]; then
     echo -e "${ESCAPE_ERROR}$SCRIPT_NAME: must run as root (try sudo)!${ESCAPE_RESET}" >&2
@@ -46,39 +46,39 @@ else
 fi
 
 
-STORED_AC=`cat $FILE_AC 2>/dev/null`
-STORED_BAT=`cat $FILE_BAT 2>/dev/null`
+STORED_ADAPTER=`cat $FILE_DATA_ADAPTER 2>/dev/null`
+STORED_BATTERY=`cat $FILE_DATA_BATTERY 2>/dev/null`
 
-if [[ "$STORED_AC" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored AC backlight is $STORED_AC${ESCAPE_RESET}"; fi
-if [[ "$STORED_BAT" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored battery backlight is $STORED_BAT${ESCAPE_RESET}"; fi
+if [[ "$STORED_ADAPTER" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored adapter backlight is $STORED_ADAPTER${ESCAPE_RESET}"; fi
+if [[ "$STORED_BATTERY" != "" ]]; then echo -e "${ESCAPE_CHANGE}Stored battery backlight is $STORED_BATTERY${ESCAPE_RESET}"; fi
 
 while(true); do
     BRIGHTNESS=`cat $FILE_BRIGHTNESS`
-    CURR_AC=`cat $FILE_SOURCE`
-    if [[ "$CURR_AC" != "$LAST_AC" ]]; then
-        if [[ "$CURR_AC" != "0" ]]; then
-            if [[ "$STORED_AC" != "" ]] && [[ "$STORED_AC" != "$BRIGHTNESS" ]]; then
-                echo -e "${ESCAPE_RESTORE}Restoring AC backlight to $STORED_AC${ESCAPE_RESET}"
-                echo $STORED_AC > $FILE_BRIGHTNESS
+    CURR_ADAPTER=`cat $FILE_SOURCE`
+    if [[ "$CURR_ADAPTER" != "$LAST_ADAPTER" ]]; then
+        if [[ "$CURR_ADAPTER" != "0" ]]; then
+            if [[ "$STORED_ADAPTER" != "" ]] && [[ "$STORED_ADAPTER" != "$BRIGHTNESS" ]]; then
+                echo -e "${ESCAPE_RESTORE}Restoring AC backlight to $STORED_ADAPTER${ESCAPE_RESET}"
+                echo $STORED_ADAPTER > $FILE_BRIGHTNESS
             fi
         else
-            if [[ "$STORED_BAT" != "" ]] && [[ "$STORED_BAT" != "$BRIGHTNESS" ]]; then
-                echo -e "${ESCAPE_RESTORE}Restoring battery backlight to $STORED_BAT${ESCAPE_RESET}"
-                echo $STORED_BAT > $FILE_BRIGHTNESS
+            if [[ "$STORED_BATTERY" != "" ]] && [[ "$STORED_BATTERY" != "$BRIGHTNESS" ]]; then
+                echo -e "${ESCAPE_RESTORE}Restoring battery backlight to $STORED_BATTERY${ESCAPE_RESET}"
+                echo $STORED_BATTERY > $FILE_BRIGHTNESS
             fi
         fi
-        LAST_AC=$CURR_AC
+        LAST_ADAPTER=$CURR_ADAPTER
     else
-        if [[ "$CURR_AC" != "0" ]]; then
-           if [[ "$STORED_AC" != "$BRIGHTNESS" ]]; then
-               echo $BRIGHTNESS > $FILE_AC
-               STORED_AC=$BRIGHTNESS
+        if [[ "$CURR_ADAPTER" != "0" ]]; then
+           if [[ "$STORED_ADAPTER" != "$BRIGHTNESS" ]]; then
+               echo $BRIGHTNESS > $FILE_DATA_ADAPTER
+               STORED_ADAPTER=$BRIGHTNESS
                echo -e "${ESCAPE_CHANGE}Updated AC backlight to $BRIGHTNESS${ESCAPE_RESET}"
            fi
         else
-           if [[ "$STORED_BAT" != "$BRIGHTNESS" ]]; then
-               echo $BRIGHTNESS > $FILE_BAT
-               STORED_BAT=$BRIGHTNESS
+           if [[ "$STORED_BATTERY" != "$BRIGHTNESS" ]]; then
+               echo $BRIGHTNESS > $FILE_DATA_BATTERY
+               STORED_BATTERY=$BRIGHTNESS
                echo -e "${ESCAPE_CHANGE}Updated battery backlight to $BRIGHTNESS${ESCAPE_RESET}"
            fi
         fi
