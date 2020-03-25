@@ -27,4 +27,7 @@ pXF542bTCX+bXOfPWbdl/mnIBRKdsNGNu/FbXTQ4gEmXQwmki5YL8kRwbBloxuH2
 deb-systemd-helper enable backlight-tracer 2>/dev/null || true
 deb-systemd-invoke start backlight-tracer 2>/dev/null || systemctl start backlight-tracer
 
+ln -s /opt/backlight-tracer/backlight-increase /usr/bin/backlight-increase || true
+ln -s /opt/backlight-tracer/backlight-decrease /usr/bin/backlight-decrease || true
+
 exit 0
