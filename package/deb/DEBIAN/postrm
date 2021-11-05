@@ -1,7 +1,11 @@
 #!/bin/bash
 set -e
 
-mandb -q
+# Update man pages
+mandb -q || true
+
+# Update services
 systemctl --system daemon-reload >/dev/null || true
 
+# Done
 exit 0

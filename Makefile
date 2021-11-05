@@ -6,7 +6,7 @@ endif
 
 
 DIST_NAME := backlight-tracer
-DIST_VERSION := 0.1.0
+DIST_VERSION := $(shell cat CHANGES.md | grep '[0-9]\.' | head -1 | cut -d" " -f2)
 DIST_ARCHITECTURE := all
 
 SOURCE_LIST := Makefile CONTRIBUTING.md LICENSE.md README.md src/ docs/
@@ -87,7 +87,7 @@ package: dist
 	@gzip -cn --best build/man/backlight-tracer.1 > $(PACKAGE_DIR)/usr/share/man/man1/backlight-tracer.1.gz
 	@find $(PACKAGE_DIR)/ -type d -exec chmod 755 {} +
 	@find $(PACKAGE_DIR)/ -type f -exec chmod 644 {} +
-	@chmod 755 $(PACKAGE_DIR)/DEBIAN/p*inst $(PACKAGE_DIR)/DEBIAN/p*rm
+	@chmod 755 $(PACKAGE_DIR)/DEBIAN/config $(PACKAGE_DIR)/DEBIAN/p*inst $(PACKAGE_DIR)/DEBIAN/p*rm
 	@install -d $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install bin/backlight-tracer $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install -d $(PACKAGE_DIR)/lib/systemd/system/
