@@ -7,5 +7,11 @@ mandb -q || true
 # Update services
 systemctl --system daemon-reload >/dev/null || true
 
+# Purge debconf
+if [ "$1" = "purge" -a -e /usr/share/debconf/confmodule ]; then
+    . /usr/share/debconf/confmodule
+    db_purge
+fi
+
 # Done
 exit 0

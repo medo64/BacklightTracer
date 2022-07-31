@@ -7,5 +7,4 @@ Description:    Tracking backlight brightness over power changes
  It remembers backlight brightness an restores it upon power state change.
 Section:        utils
 Priority:       optional
-Depends:        gnupg2
-Build-Depends:  dh-systemd (>= 1.5)
+Depends:        gnupg2,debconf

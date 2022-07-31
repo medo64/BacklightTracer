@@ -8,5 +8,8 @@ mandb -q || true
 deb-systemd-helper enable backlight-tracer || true
 deb-systemd-invoke start backlight-tracer || systemctl start backlight-tracer
 
+# Just loading to suppress warning
+. /usr/share/debconf/confmodule || true
+
 # Done
 exit 0
