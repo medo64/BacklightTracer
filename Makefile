@@ -92,7 +92,7 @@ package: dist
 	@install bin/backlight-tracer $(PACKAGE_DIR)/opt/backlight-tracer/
 	@install -d $(PACKAGE_DIR)/lib/systemd/system/
 	@sudo install -m 644 src/backlight-tracer.service $(PACKAGE_DIR)/lib/systemd/system/
-	@fakeroot dpkg-deb --build $(PACKAGE_DIR)/ > /dev/null
+	@fakeroot dpkg-deb -Zgzip --build $(PACKAGE_DIR)/ > /dev/null
 	@cp /tmp/$(PACKAGE_NAME).deb dist/
 	@$(RM) -r $(PACKAGE_DIR)/
 	@lintian --suppress-tags dir-or-file-in-opt dist/$(PACKAGE_NAME).deb
