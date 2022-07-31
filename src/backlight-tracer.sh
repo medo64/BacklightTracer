@@ -24,8 +24,6 @@ trap "echo -ne '${ESCAPE_RESET}' ; rm $PID_FILE 2> /dev/null; exit 0" EXIT INT K
 
 FILE_AC="/var/cache/.backlight-tracer.ac"
 FILE_BAT="/var/cache/.backlight-tracer.bat"
-FILE_SOURCE="/sys/class/power_supply/AC/online"
-FILE_BRIGHTNESS="/sys/class/backlight/intel_backlight/brightness"
 
 
 if [ "$EUID" -ne 0 ]; then
@@ -33,11 +31,16 @@ if [ "$EUID" -ne 0 ]; then
     exit 254
 fi
 
-if [[ ! -e "$FILE_SOURCE" ]]; then
+if [[ -e "/sys/class/power_supply/AC/online" ]]; then
+    FILE_SOURCE="/sys/class/power_supply/AC/online"
+elif [[ -e "/sys/class/power_supply/ACAD/online" ]]; then
+    FILE_SOURCE="/sys/class/power_supply/ACAD/online"
+else
     echo -e "${ESCAPE_ERROR}$SCRIPT_NAME: cannot find AC status in '$FILE_SOURCE'!${ESCAPE_RESET}" >&2
     exit 253
 fi
 
+FILE_BRIGHTNESS="/sys/class/backlight/intel_backlight/brightness"
 if [[ ! -e "$FILE_BRIGHTNESS" ]]; then
     echo -e "${ESCAPE_ERROR}$SCRIPT_NAME: cannot find backlight brightness in '$FILE_BRIGHTNESS'!${ESCAPE_RESET}" >&2
     exit 252
@@ -84,4 +87,3 @@ while(true); do
 
     sleep 0.5
 done
-
